@@ -1,0 +1,83 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --space: #00000f;
+  --hud: rgba(200, 255, 0, 0.85);
+  --hud-dim: rgba(200, 255, 0, 0.4);
+  --hud-faint: rgba(200, 255, 0, 0.08);
+  --chalk: #f0ede8;
+  --chalk-2: #c8c4bc;
+  --chalk-3: #7a7670;
+  --wire: rgba(200,255,0,0.12);
+  --font-hud: 'Share Tech Mono', monospace;
+  --font-display: 'Rajdhani', sans-serif;
+}
+
+html, body, #root {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--space);
+  color: var(--chalk);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+
+canvas { display: block; }
+
+/* HUD scanline overlay */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--space); }
+::-webkit-scrollbar-thumb { background: var(--hud); }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-hud {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0.6; }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes rotate-ring {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.animate-fade-in    { animation: fadeIn 0.5s ease both; }
+.animate-slide-in   { animation: slideInRight 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+.animate-pulse-hud  { animation: pulse-hud 2s ease-in-out infinite; }
+
+/* Corner bracket decoration */
+.corner-bracket {
+  position: absolute;
+  width: 16px; height: 16px;
+  border-color: var(--hud-dim);
+  border-style: solid;
+}
+.corner-bracket.tl { top:0; left:0;  border-width: 1px 0 0 1px; }
+.corner-bracket.tr { top:0; right:0; border-width: 1px 1px 0 0; }
+.corner-bracket.bl { bottom:0; left:0;  border-width: 0 0 1px 1px; }
+.corner-bracket.br { bottom:0; right:0; border-width: 0 1px 1px 0; }
